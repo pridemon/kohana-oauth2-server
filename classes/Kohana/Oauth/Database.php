@@ -87,5 +87,16 @@ class Kohana_Oauth_Database implements OAuth2_Storage_AuthorizationCodeInterface
 	{
 		return Model::factory('Oauth')->getClientKey($client_id, $subject);
 	}
+
+    // new
+    public function checkSocialUserCredentials($social, $identity)
+    {
+        return Model::factory('Oauth')->checkSocialUserCredentials($social, $identity);
+    }
+
+    public function getSocialUserDetails($social, $identity)
+    {
+        return Model::factory('Oauth')->getSocialUserDetails($social, $identity);
+    }
 	
 }

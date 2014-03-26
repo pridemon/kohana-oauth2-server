@@ -5,7 +5,7 @@ class Model_Oauth extends Model_Database
 	
 	public function checkClientCredentials($client_id, $client_secret = NULL)
 	{
-		$table = Oauth::$config->storage['client_table'];
+		$table = Oauthserver::$config->storage['client_table'];
 		
 		$result = DB::query(Database::SELECT, "SELECT * FROM $table WHERE client_id = :client_id LIMIT 1;")
 			->parameters(array(
@@ -19,7 +19,7 @@ class Model_Oauth extends Model_Database
 	
 	public function getClientDetails($client_id)
 	{
-		$table = Oauth::$config->storage['client_table'];
+		$table = Oauthserver::$config->storage['client_table'];
 		
 		$result = DB::query(Database::SELECT, "SELECT * FROM $table WHERE client_id = :client_id LIMIT 1;")
 			->parameters(array(
@@ -45,7 +45,7 @@ class Model_Oauth extends Model_Database
 	
 	public function getAccessToken($access_token)
 	{
-		$table = Oauth::$config->storage['access_token_table'];
+		$table = Oauthserver::$config->storage['access_token_table'];
 		
 		$result = DB::query(Database::SELECT, "SELECT * FROM $table WHERE access_token = :access_token LIMIT 1;")
 			->parameters(array(
@@ -64,7 +64,7 @@ class Model_Oauth extends Model_Database
 	
 	public function setAccessToken($access_token, $client_id, $user_id, $expires, $scope = NULL)
 	{
-		$table = Oauth::$config->storage['access_token_table'];
+		$table = Oauthserver::$config->storage['access_token_table'];
 		
 		$expires = date('Y-m-d H:i:s', $expires);
 		
@@ -91,7 +91,7 @@ class Model_Oauth extends Model_Database
 	
 	public function getAuthorizationCode($authorization_code)
 	{
-		$table = Oauth::$config->storage['code_table'];
+		$table = Oauthserver::$config->storage['code_table'];
 		
 		$result = DB::query(Database::SELECT, "SELECT * FROM $table WHERE authorization_code = :authorization_code LIMIT 1;")
 			->parameters(array(
@@ -110,7 +110,7 @@ class Model_Oauth extends Model_Database
 	
 	public function setAuthorizationCode($authorization_code, $client_id, $user_id, $redirect_uri, $expires, $scope = NULL)
 	{
-		$table = Oauth::$config->storage['code_table'];
+		$table = Oauthserver::$config->storage['code_table'];
 		
 		$expires = date('Y-m-d H:i:s', $expires);
 		
@@ -138,7 +138,7 @@ class Model_Oauth extends Model_Database
 	
 	public function expireAuthorizationCode($authorization_code)
 	{
-		$table = Oauth::$config->storage['code_table'];
+		$table = Oauthserver::$config->storage['code_table'];
 		
 		$result = DB::query(Database::DELETE, "DELETE FROM $table WHERE authorization_code = :authorization_code;")
 			->parameters(array(
@@ -163,7 +163,7 @@ class Model_Oauth extends Model_Database
 	
 	public function getRefreshToken($refresh_token)
 	{
-		$table = Oauth::$config->storage['refresh_token_table'];
+		$table = Oauthserver::$config->storage['refresh_token_table'];
 		
 		$result = DB::query(Database::SELECT, "SELECT * FROM $table WHERE refresh_token = :refresh_token LIMIT 1;")
 			->parameters(array(
@@ -182,7 +182,7 @@ class Model_Oauth extends Model_Database
 	
 	public function setRefreshToken($refresh_token, $client_id, $user_id, $expires, $scope = NULL)
 	{
-		$table = Oauth::$config->storage['refresh_token_table'];
+		$table = Oauthserver::$config->storage['refresh_token_table'];
 		
 		$expires = date('Y-m-d H:i:s', $expires);
 		
@@ -201,7 +201,7 @@ class Model_Oauth extends Model_Database
 	
 	public function unsetRefreshToken($refresh_token)
 	{
-		$table = Oauth::$config->storage['refresh_token_table'];
+		$table = Oauthserver::$config->storage['refresh_token_table'];
 		
 		$result = DB::query(Database::DELETE, "DELETE FROM $table WHERE refresh_token = :refresh_token;")
 			->parameters(array(
@@ -219,7 +219,7 @@ class Model_Oauth extends Model_Database
 	
 	public function getUser($username)
 	{
-		$table = Oauth::$config->storage['user_table'];
+		$table = Oauthserver::$config->storage['user_table'];
 		
 		$result = DB::query(Database::SELECT, "SELECT * FROM $table WHERE username = :username LIMIT 1;")
 			->parameters(array(
@@ -233,7 +233,7 @@ class Model_Oauth extends Model_Database
 	
 	public function setUser($username, $password, $first_name = NULL, $last_name = NULL)
 	{
-		$table = Oauth::$config->storage['user_table'];
+		$table = Oauthserver::$config->storage['user_table'];
 		
 		if ($this->getUser($username))
 		{
@@ -257,7 +257,7 @@ class Model_Oauth extends Model_Database
 	
 	public function getClientKey($client_id, $subject)
 	{
-		$table = Oauth::$config->storage['jwt_table'];
+		$table = Oauthserver::$config->storage['jwt_table'];
 		
 		$result = DB::query(Database::SELECT, "SELECT public_key FROM $table WHERE client_id = :client_id AND subject = :subject LIMIT 1;")
 			->parameters(array(
@@ -269,5 +269,45 @@ class Model_Oauth extends Model_Database
 		
 		return $result ? $result[0] : NULL;
 	}
+
+    // new
+    public function checkSocialUserCredentials($social, $identity)
+    {
+        $user = $this->getSocialUser($social, $identity);
+
+        return !is_null($user);
+    }
+
+    public function getSocialUser($social, $identity)
+    {
+        //$table = Oauthserver::$config->storage['user_ulogin'];
+        $table = 'ulogin';
+
+        $result = DB::query(Database::SELECT, "SELECT users.id as user_id FROM users JOIN ulogins AS ul ON ul.user_id = users.id  WHERE ul.network=:social AND ul.identity = :identity LIMIT 1;")
+            ->parameters(array(
+                    ':social' => $social,
+                    ':identity' => $identity,
+                ))
+            ->execute()
+            ->as_array();
+
+        return $result ? $result[0] : NULL;
+    }
+
+    public function getSocialUserDetails($social, $identity)
+    {
+        return $this->getSocialUser($social, $identity);
+    }
+
+
+
+
+
+
+
+
+
+
+
 	
 }
