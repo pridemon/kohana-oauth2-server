@@ -15,7 +15,7 @@ abstract class Kohana_Oauthserver
 	{
 		if (self::$instance === NULL)
 		{
-			self::$config = Kohana::$config->load('oauth');
+			self::$config = Kohana::$config->load('oauth2s');
 			
 			self::$storage = new Kohana_Oauth_Database();
 			
