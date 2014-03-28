@@ -17,14 +17,12 @@ abstract class Kohana_Oauthserver
 		{
 			self::$config = Kohana::$config->load('oauth2s');
 			
-			self::$storage = new Kohana_Oauth_Database();
+			self::$storage = new Oauth_Database();
 			
 			$grant_types = array();
 			
 			$valid_grant_types = array(
-                //'social_credentials' => 'UserCredentials',
-                'user_credentials' => 'UserCredentials',
-				//'user_credentials' => 'OAuth2_GrantType_UserCredentials',
+				'user_credentials' => 'OAuth2_GrantType_UserCredentials',
 				'client_credentials' => 'OAuth2_GrantType_ClientCredentials',
 				'refresh_token' => 'OAuth2_GrantType_RefreshToken',
 				'authorization_code' => 'OAuth2_GrantType_AuthorizationCode',
