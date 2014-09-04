@@ -1,0 +1,24 @@
+{
+    "name": "pridemon/kohana-oauth2-server",
+    "type":        "kohana-module",
+    "description": "A library for implementing an OAuth2 Server in Kohana 3 Framework",
+    "license":     "MIT",
+    "require": {
+        "composer/installers": "~1.0",
+        "kohana/core":         ">=3.3",
+        "php":                 ">=5.3.3"
+    },
+    "repositories"			:[
+
+        {
+            "type":"git",
+            "url":"https://github.com/pridemon/kohana-oauth2-server.git"
+        }
+    ],
+    "authors": [
+        {
+            "name": "Ilya Gudkov",
+            "email": "pridemon@yandex.ru"
+        }
+    ]
+}
