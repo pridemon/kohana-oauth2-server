@@ -1,6 +1,8 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Kohana_Oauth_Database implements OAuth2\Storage\AuthorizationCodeInterface, OAuth2\Storage\AccessTokenInterface, OAuth2\Storage\ClientCredentialsInterface, OAuth2\Storage\UserCredentialsInterface, OAuth2\Storage\RefreshTokenInterface, OAuth2\Storage\JWTBearerInterface
+class Kohana_Oauth_Database implements OAuth2\Storage\AuthorizationCodeInterface, OAuth2\Storage\AccessTokenInterface,
+    OAuth2\Storage\ClientCredentialsInterface, OAuth2\Storage\UserCredentialsInterface, OAuth2\Storage\RefreshTokenInterface
+    //, OAuth2\Storage\JWTBearerInterface
 {
 	
 	public function checkClientCredentials($client_id, $client_secret = null)
