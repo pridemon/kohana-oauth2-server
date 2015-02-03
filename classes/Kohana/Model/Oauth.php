@@ -5,6 +5,7 @@ class Kohana_Model_Oauth extends Model_Database
 	
 	public function checkClientCredentials($client_id, $client_secret = NULL)
 	{
+
 		$table = Oauthserver::$config->storage['client_table'];
 		
 		$result = DB::query(Database::SELECT, "SELECT * FROM $table WHERE client_id = :client_id LIMIT 1;")
@@ -13,8 +14,8 @@ class Kohana_Model_Oauth extends Model_Database
 			))
 			->execute()
 			->as_array();
-		
-		return $result ? $result[0]['client_secret'] == $client_secret : NULL;
+
+		return $result ? $result[0]['client_secret'] == $client_secret : FALSE;
 	}
 	
 	public function getClientDetails($client_id)
