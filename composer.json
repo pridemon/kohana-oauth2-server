@@ -4,7 +4,7 @@
     "description": "A library for implementing an OAuth2 Server in Kohana 3 Framework",
     "license":     "MIT",
     "require": {
-        "bshaffer/oauth2-server-php": "dev-develop",
+        "bshaffer/oauth2-server-php": "1.8.0",
         "composer/installers": "~1.0",
         "kohana/core":         ">=3.3",
         "php":                 ">=5.3.3"
